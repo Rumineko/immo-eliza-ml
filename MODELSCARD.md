@@ -131,7 +131,7 @@ Use the code below to get started with the model.
 * build the model by running preprocess.py and train.py:
   `python preprocess.py`
   `python train.py`
-* place your data you want to predict inside of the root folder as a .csv file, and run predict.py:
+* place your data you want to predict inside of the root folder as a file called new_data.csv, and run predict.py:
   `python predict.py`
 
 </details>
