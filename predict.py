@@ -69,7 +69,7 @@ columns_to_predict = [
 dataframe3 = dataframe2[columns_to_predict]
 
 # Load the model
-model = pickle.load(open("model_dropped.pkl", "rb"))
+model = pickle.load(open("model_imputed.pkl", "rb"))
 
 # Make predictions
 predictions = model.predict(dataframe3)

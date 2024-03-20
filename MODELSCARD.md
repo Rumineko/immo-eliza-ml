@@ -1,5 +1,3 @@
-
-
 # Model Card for HermitCrab-Predict
 
 This model was created as part of the BeCode AI Bootcamp over the course of approximately two weeks in March 2024. It is the third phase of the project, and utilizes the data previously acquired to create a model to predict the price of Houses and Apartments in Belgium.
@@ -98,6 +96,7 @@ Mean Absolute Error and Accuracy
 ## Results
 
 Mean Absolute Error: 118486.69 euros
+
 Accuracy: 71.89 %
 
 # Technical Specifications

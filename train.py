@@ -3,6 +3,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
+from sklearn.impute import KNNImputer
 import pickle
 
 # Read the .csv file
@@ -67,21 +68,43 @@ X = dataframe.drop("Price", axis=1)
 y = dataframe["Price"]
 X.shape, y.shape
 
+df5 = df5.dropna(subset=["Price"])
+columns_to_drop = [
+    "Latitude",
+    "Longitude",
+    "Swimming Pool",
+    "Region_Flanders",
+    "Region_Brussels",
+    "Region_Wallonia",
+    "Bedroom Count",
+    "Bathroom Count",
+]
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=53
+dataframe = df5.drop(columns_to_drop, axis=1)
+unimputed_X = dataframe.drop("Price", axis=1)
+unimputed_y = dataframe["Price"]
+
+
+unimputed_X_train, unimputed_X_test, unimputed_y_train, unimputed_y_test = (
+    train_test_split(unimputed_X, unimputed_y, test_size=0.2, random_state=53)
 )
 
+impute_knn = KNNImputer(n_neighbors=5)
+imputed_x_train = impute_knn.fit_transform(unimputed_X_train)
+imputed_x_test = impute_knn.fit_transform(unimputed_X_test)
+
 rf = RandomForestRegressor(n_estimators=1000, random_state=42)
-rf.fit(X_train, y_train)
-y_pred = rf.predict(X_test)
+rf.fit(imputed_x_train, unimputed_y_train)
+unimouted_y_pred = rf.predict(imputed_x_test)
 
 # Calculate mean absolute percentage error (MAPE)
-errors = abs(y_pred - y_test)
-mape = 100 * (errors / y_test)
+errors = abs(unimouted_y_pred - unimputed_y_test)
+mape = 100 * (errors / unimputed_y_test)
 # Calculate and display accuracy
 accuracy = 100 - np.mean(mape)
 print("Mean Absolute Error:", round(np.mean(errors), 2), "euros.")
 print("Accuracy:", round(accuracy, 2), "%.")
+
 # Save the model
-pickle.dump(rf, open("model_dropped.pkl", "wb"))
+with open("model_imputed.pkl", "wb") as file:
+    pickle.dump(rf, file)
