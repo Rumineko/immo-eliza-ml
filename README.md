@@ -1,7 +1,5 @@
----
 
 
----
 # Model Card for HermitCrab-Predict
 
 This model was created as part of the BeCode AI Bootcamp over the course of approximately two weeks in March 2024. It is the third phase of the project, and utilizes the data previously acquired to create a model to predict the price of Houses and Apartments in Belgium.
@@ -39,11 +37,12 @@ This model was created as part of the BeCode AI Bootcamp over the course of appr
 
 This model was created as part of the BeCode AI Bootcamp over the course of approximately two weeks in March 2024. It is the third phase of the project, and utilizes the data previously acquired to create a model to predict the price of Houses and Apartments in Belgium.
 
-- **Developed by:** Alice Mendes
+- **Developed by:** [Alice Mendes](https://www.linkedin.com/in/alice-edcm/)
 - **Model type:** Random Forest Regression
 - **License:** openrail
 - **Resources for more information:**
-  - [GitHub Repo](https://github.com/Rumineko/immo-eliza-hermitcrabs-analysis)
+  - [First Part of the Project](https://github.com/karelrduran/Immo-Data-Collection)
+  - [Second Part of the Project](https://github.com/Rumineko/immo-eliza-hermitcrabs-analysis)
 
 # Uses
 
