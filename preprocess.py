@@ -47,6 +47,261 @@ def append_data(df: DataFrame) -> DataFrame:
     return df
 
 
+def append_data_singular(df: DataFrame) -> DataFrame:
+    # Append new data to the existing data
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    postals = pd.read_csv(os.path.join(current_dir, "src", "zipcodes.csv"))
+    # Appends Municipality to the DataFrame
+    postalcode = df["Postal Code"].values[
+        0
+    ]  # Access the "Postal Code" column correctly
+    province = postals[postals["Postcode"] == postalcode]["Provincie"]
+    # Appends Province to the DataFrame. Utilizes a smart fill method to fill in the province, if it is not found in the csv file.
+    # Same as the above case.
+    if not province.empty:
+        df.loc[df["Postal Code"] == postalcode, "Province"] = province.values[0]
+    return df
+
+
+def convert_non_numeric_singular(df: DataFrame) -> DataFrame:
+    building_state = {
+        "TO_RESTORE": 0,
+        "TO_RENOVATE": 1,
+        "TO_BE_DONE_UP": 2,
+        "GOOD": 3,
+        "JUST_RENOVATED": 4,
+        "AS_NEW": 5,
+    }
+    df["State of Building"] = (
+        df["State of Building"].map(building_state).fillna(df["State of Building"])
+    )
+
+    energy_ratings = {
+        "G": 8,
+        "F": 7,
+        "E": 6,
+        "D": 5,
+        "C": 4,
+        "B": 3,
+        "A": 2,
+        "A+": 1,
+        "A++": 0,
+    }
+    df["EPC"] = df["EPC"].map(energy_ratings).fillna(df["EPC"])
+
+    kitchen_types = {
+        "NOT_INSTALLED": 0,
+        "USA_UNINSTALLED": 0,
+        "SEMI_EQUIPPED": 1,
+        "USA_SEMI_EQUIPPED": 1,
+        "INSTALLED": 2,
+        "USA_INSTALLED": 2,
+        "HYPER_EQUIPPED": 3,
+        "USA_HYPER_EQUIPPED": 3,
+    }
+    df["Kitchen Type"] = (
+        df["Kitchen Type"].map(kitchen_types).fillna(df["Kitchen Type"])
+    )
+
+    df["Province"] = df["Province"].values[0]
+
+    if df["Type"].values[0] == "APARTMENT":
+        df["Type_APARTMENT"] = 1
+        df["Type_HOUSE"] = 0
+    else:
+        df["Type_APARTMENT"] = 0
+        df["Type_HOUSE"] = 1
+
+    if df["Province"].values[0] == "ANTWERPEN":
+        df["Province_ANTWERPEN"] = 1
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "BRUSSEL":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 1
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "HENEGOUWEN":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 1
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "LIMBURG":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 1
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "LUIK":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 1
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "LUXEMBURG":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 1
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "NAMEN":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 1
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "OOST-VLAANDEREN":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 1
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "VLAAMS-BRABANT":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 1
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "WAALS-BRABANT":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 1
+        df["Province_WEST-VLAANDEREN"] = 0
+    elif df["Province"].values[0] == "WEST-VLAANDEREN":
+        df["Province_ANTWERPEN"] = 0
+        df["Province_BRUSSEL"] = 0
+        df["Province_HENEGOUWEN"] = 0
+        df["Province_LIMBURG"] = 0
+        df["Province_LUIK"] = 0
+        df["Province_LUXEMBURG"] = 0
+        df["Province_NAMEN"] = 0
+        df["Province_OOST-VLAANDEREN"] = 0
+        df["Province_VLAAMS-BRABANT"] = 0
+        df["Province_WAALS-BRABANT"] = 0
+        df["Province_WEST-VLAANDEREN"] = 1
+
+    df.drop(["Province", "Type"], axis=1, inplace=True)
+
+    boolean = {False: 0, True: 1}
+    df["Openfire"] = df["Openfire"].map(boolean).fillna(df["Openfire"])
+    df["Furnished"] = df["Furnished"].map(boolean).fillna(df["Furnished"])
+
+    return df
+
+
+def convert_non_numeric(df: DataFrame) -> DataFrame:
+    # Receives a DataFrame and converts non-numeric data to numeric data.
+    building_state = {
+        "TO_RESTORE": 0,
+        "TO_RENOVATE": 1,
+        "TO_BE_DONE_UP": 2,
+        "GOOD": 3,
+        "JUST_RENOVATED": 4,
+        "AS_NEW": 5,
+    }
+    df["State of Building"] = df["State of Building"].apply(
+        lambda x: building_state.get(x, np.NAN)
+    )
+
+    energy_ratings = {
+        "G": 8,
+        "F": 7,
+        "E": 6,
+        "D": 5,
+        "C": 4,
+        "B": 3,
+        "A": 2,
+        "A+": 1,
+        "A++": 0,
+    }
+    df["EPC"] = df["EPC"].apply(lambda x: energy_ratings.get(x, np.NAN))
+
+    kitchen_types = {
+        "NOT_INSTALLED": 0,
+        "USA_UNINSTALLED": 0,
+        "SEMI_EQUIPPED": 1,
+        "USA_SEMI_EQUIPPED": 1,
+        "INSTALLED": 2,
+        "USA_INSTALLED": 2,
+        "HYPER_EQUIPPED": 3,
+        "USA_HYPER_EQUIPPED": 3,
+    }
+    df["Kitchen Type"] = df["Kitchen Type"].apply(
+        lambda x: kitchen_types.get(x, np.NAN)
+    )
+
+    boolean = {False: 0, True: 1}
+
+    df["Furnished"] = df["Furnished"].apply(lambda x: boolean.get(x, np.NAN))
+    df["Openfire"] = df["Openfire"].apply(lambda x: boolean.get(x, np.NAN))
+    return df
+
+
 def convert_non_numeric_to_numeric(df: DataFrame) -> DataFrame:
     # Receives a DataFrame and converts non-numeric data to numeric data.
     building_state = {

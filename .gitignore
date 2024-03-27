@@ -1,3 +1,6 @@
 
 experimenting/model_imputed.pkl
 experimenting/model_dropped.pkl
+*.pyc
+__pycache__/preprocess.cpython-312.pyc
+/__pycache__
