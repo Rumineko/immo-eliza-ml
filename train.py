@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 import pickle
-import compress_pickle as cpkl
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 
@@ -24,8 +23,6 @@ columns_to_use = [
     "State of Building",
     "EPC",
     "Swimming Pool",
-    "Latitude",
-    "Longitude",
     "Region",
 ]
 
@@ -99,7 +96,8 @@ accuracy = 100 - np.mean(mape)
 print("Mean Absolute Error:", round(np.mean(errors), 2), "euros.")
 print("Accuracy:", round(accuracy, 2), "%.")
 
-print(X_train.dtypes)
+feature_names = X.columns.tolist()
+print(feature_names)
 
 # Save the model
 with open("model_imputed.pkl", "wb") as file:
